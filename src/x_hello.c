@@ -1,5 +1,5 @@
 /*
-  File: x_hello.c
+  File: x_naive_matmul.c
 
   Copyright 2013 Mark Honman
 
@@ -18,23 +18,10 @@
   see the files COPYING and COPYING.LESSER. If not, see
   <http://www.gnu.org/licenses/>.
 */
-/*============================== x_hello.c =============================*/
+/*========================= x_naive_matmul.c =============================*/
 
-/* Obligatory "hellow world" to demonstrate the most basic x-lib program.
-   This is an SPMD core program in which x_set_task_status is used to 
-   get messages out to the host environment. 
-
-   The left-most tasks in the workgroup (column 0) send a “hello” message
-   to the second-column tasks which then set it as their status. The 
-   timing of the sends and receives is offset to demonstrates the synchronous 
-   nature of the transfer (offsets are +row*2 seconds for sends, -row*2 for 
-   receive operations). The tasks in the remainder of the workgroup simply 
-   set a "hello" status, wait 10 seconds, and then set a "goodbye" status.
-
-   Note that the example assumes that the connections from left-column 
-   tasks to second-column tasks have been created with X_TO_RIGHT and 
-   X_FROM_LEFT keys for their endpoints as is done by the host-side 
-   application setup function x_prepare_mesh_application. 
+/* A very simple matrix multiplication that operates on in-core matrices
+   and serves only to obtain a baseline floating-point performance figure.
 */
 
 #include <stdio.h>

@@ -20,11 +20,11 @@
 */
 
 /* This is a generic test driver that loads an x-lib Epiphany task onto every core
-   of the device, configures wraparound connections between the tasks, then launches
-   them and monitors progress of the application until its completion. 
-   The name of the Epiphany executable is received as first argument, and the
-   remaining arguments are passed to the newly created tasks. 
-*/
+ * of the device, configures wraparound connections between the tasks, then launches
+ * them and monitors progress of the application until its completion. 
+ * The name of the Epiphany executable is received as first argument, and the
+ * remaining arguments are passed to the newly created tasks. 
+ */
 
 #include <stdlib.h>
 #include <stdio.h>

@@ -188,11 +188,14 @@ void x_display_application_summary (x_display_style_t display_style)
 /* x_display_application_task_list
 
    Writes the information in the application's task list to standard output
+
+   Executable file names are displayed without their suffix. 
 */
 
 void x_display_application_task_list (x_display_style_t display_style)
 {
-        char *executable_path, *executable_name;
+        char *executable_path, *executable_name, *dotpos;
+        char display_name[80];
         int   index, workgroup_column, workgroup_row;
         
         if ((display_style & X_DISPLAY_TYPE_MASK) != X_NO_DISPLAY) {
@@ -235,11 +238,17 @@ void x_display_application_task_list (x_display_style_t display_style)
                 else {
                   executable_name = executable_path;
                 }
-                printf("%7d   %2d %2d %2d %4d %2d %.18s %s\n",
+                strncpy (display_name, executable_name, sizeof(display_name)-1);
+                display_name[sizeof(display_name)-1] = '\0';
+                dotpos = strchr(display_name,'.');
+                if (dotpos != NULL) {
+                    *dotpos = '\0';
+                }	
+                printf("%7d   %2d %2d %2d %4d %2d %-18.18s %s\n",
                        descriptor->coreid_or_pid, workgroup_column, workgroup_row,
                        descriptor->state, descriptor->heartbeat % 10000,
                        descriptor->num_connections,
-                       executable_name, descriptor->status);                      
+                       display_name, descriptor->status);                      
               }
             }              
           }

@@ -25,15 +25,15 @@
 
 int main(int argc, char *argv[])
 {
-	int workgroup_rows    = 0,
-	    workgroup_columns = 0,
-	    host_task_slots   = 1;
-	
-	x_initialize_application (argv[0], &workgroup_rows, &workgroup_columns,
-	                          &host_task_slots); 
-	x_prepare_mesh_application ("e_messaging_test.srec", X_WRAPAROUND_MESH);
-	x_launch_application (argc-1, argv+1);
-	x_monitor_application (X_STATUS_DISPLAY | X_DISPLAY_RUN_TIME | X_LIVE_DISPLAY, 1);
-	return (x_finalize_application ());
+    int workgroup_rows    = 0,
+        workgroup_columns = 0,
+        host_task_slots   = 1;
+    
+    x_initialize_application (argv[0], &workgroup_rows, &workgroup_columns,
+                              &host_task_slots); 
+    x_prepare_mesh_application ("e_messaging_test.srec", X_WRAPAROUND_MESH);
+    x_launch_application (argc-1, argv+1);
+    x_monitor_application (X_STATUS_DISPLAY | X_DISPLAY_RUN_TIME | X_LIVE_DISPLAY, 1);
+    return (x_finalize_application ());
 }
 

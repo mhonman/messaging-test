@@ -22,8 +22,8 @@ see the files COPYING and COPYING.LESSER. If not, see
 #ifndef _X_SLEEP_H_
 #define _X_SLEEP_H_
 
-int x_usleep (unsigned int microseconds);
-unsigned int x_sleep (int seconds);
+int x_usleep (unsigned int usec);
+unsigned int x_sleep (unsigned int seconds);
 
 #endif /* _X_SLEEP_H_ */
 

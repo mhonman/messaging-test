@@ -257,6 +257,7 @@ void sync_receive_speed_test(int connection_key)
         }
 }
 
+#include <stdio.h>
 int task_main(int argc, const char *argv[]) 
 {
         e_coreid_t coreid;

@@ -45,6 +45,7 @@ see the files COPYING and COPYING.LESSER. If not, see
 #define X_MESSAGING_MIN_DMA_ITEMS (152)
 
 // NB! The following must match the HDF and LDF in use. 
+// In fact the information can probably be obtained from the LDF
 // The DRAM has a different base address in host physical, host process,
 // and Epiphany core address space. 
 // The XLIB_SHARED_DRAM section has the same offset from the appropriate 

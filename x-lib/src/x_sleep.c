@@ -28,34 +28,37 @@ see the files COPYING and COPYING.LESSER. If not, see
 #include <e_lib.h>
 #endif
 
-int x_usleep (unsigned int microseconds)
+int x_usleep (unsigned int usec)
 {
-        if (microseconds > 1000000) {
-          return -1;  // should also set EINVAL
-        }
-        else {
+    if (usec > 1000000) {
+        return -1;  
+        errno = EINVAL;
+    }
+       else {
 #ifdef __epiphany__
-          // Future enhancement: find a timer that is not in use
-          e_wait (E_CTIMER_0, microseconds * X_EPIPHANY_FREQUENCY);
-          // Future: check for early end due to interrupt and return -1,
-          //  setting error EINTR
-          return 0;
+        // Future enhancement: find a timer that is not in use
+        e_wait (E_CTIMER_0, usec * X_EPIPHANY_FREQUENCY);
+        // Future: check for early end due to interrupt and return -1,
+        //  setting error EINTR
+        return 0;
 #else
-          return usleep (microseconds);
+        return usleep (usec);
 #endif
-        }
+    }
 }
 
 /* x_sleep
 */
 
-unsigned int x_sleep (int seconds)
+unsigned int x_sleep (unsigned int seconds)
 {
-        int second;
-        for (second = 0; second < seconds; second++) {
-          if ( EINTR == x_usleep(1000000) ) return (seconds - second);
-        }
-        return 0;
+    unsigned int second;
+    for (second = 0; second < seconds; second++) {
+        if ( EINTR == x_usleep(1000000) ) {
+            return (seconds - second);
+        }   
+    }
+    return 0;
 }
 
 
