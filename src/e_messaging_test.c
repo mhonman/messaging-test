@@ -166,7 +166,7 @@ void sync_receive_test (int connection_key)
    The penalty for using less-than-doubleword sizes seems to be non-linear.
    Lesson: If receiver buffer is big enough and buffer positions are word
    or doubleword-aligned, transfer code should round up!
-
+ 
    Comparison of C-coded logic (loops/sec:cycles) and e_dma_copy.
    Each loop is 10000 repetitions of the transfer.
    Times recorded before amending the code to choose the transfer method. 
