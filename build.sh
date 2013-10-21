@@ -12,13 +12,22 @@ ELDF=${XLIB}/bsps/current/fast.ldf
 XHLIBS=${XLIB}/host/lib
 XELIBS=${XLIB}/epiphany/lib
 XINCS=${XLIB}/include
+XHOBJS=${XLIB}/host/object
+XEOBJS=${XLIB}/epiphany/object
+
+# Make target directories if needed
+for d in Debug $XHLIBS $XELIBS $XINCS $XHOBJS $XEOBJS ; do
+  if [ ! -d $d ] ; then
+    mkdir -p $d
+  fi
+done
 
 # Build x-lib for HOST
 echo Building host-side x-lib
-(cd x-lib/host/object;
+(cd $XHOBJS;
 gcc -c ../../src/*.c -I ../../include -I ${HINCS})
-rm x-lib/host/lib/libx-lib.a
-ar crs x-lib/host/lib/libx-lib.a x-lib/host/object/*.o
+rm ${XHLIBS}/libx-lib.a
+ar crs ${XHLIBS}/libx-lib.a ${XHOBJS}/*.o
 
 # Build HOST side application
 echo Building host-side executable
@@ -26,10 +35,10 @@ gcc src/messaging_test.c -o Debug/messaging_test.elf -I ${XINCS} -I ${HINCS} -L 
 
 # Build x-lib for DEVICE
 echo Building device-side x-lib
-(cd x-lib/epiphany/object;
+(cd $XEOBJS;
 e-gcc -O2 -c ../../src/*.c -I ../../include)
-rm x-lib/epiphany/lib/libx-lib.a
-ar crs x-lib/epiphany/lib/libx-lib.a x-lib/epiphany/object/*.o
+rm ${XELIBS}/libx-lib.a
+ar crs ${XELIBS}/libx-lib.a ${XEOBJS}/*.o
 
 # Build DEVICE side program
 echo Building device-side executables
