@@ -29,9 +29,11 @@ gcc -c ../../src/*.c -I ../../include -I ${HINCS})
 rm ${XHLIBS}/libx-lib.a
 ar crs ${XHLIBS}/libx-lib.a ${XHOBJS}/*.o
 
-# Build HOST side application
-echo Building host-side executable
+# Build HOST side applications
+echo Building host-side executables
 gcc src/messaging_test.c -o Debug/messaging_test.elf -I ${XINCS} -I ${HINCS} -L ${XHLIBS} -L ${HLIBS} -lx-lib -le-hal 
+gcc src/test_controller.c -o Debug/test_controller.elf -I ${XINCS} -I ${HINCS} -L ${XHLIBS} -L ${HLIBS} -lx-lib -le-hal 
+gcc src/simon.c -o Debug/simon.elf -I ${XINCS} -I ${HINCS} -L ${XHLIBS} -L ${HLIBS} -lx-lib -le-hal 
 
 # Build x-lib for DEVICE
 echo Building device-side x-lib
@@ -40,12 +42,22 @@ e-gcc -O2 -c ../../src/*.c -I ../../include)
 rm ${XELIBS}/libx-lib.a
 ar crs ${XELIBS}/libx-lib.a ${XEOBJS}/*.o
 
-# Build DEVICE side program
+# Build DEVICE side programs
 echo Building device-side executables
-e-gcc -T ${ELDF} src/e_messaging_test.c -o Debug/e_messaging_test.elf -I ${XINCS} -L ${XELIBS} -lx-lib -le-lib
+for TARGET in e_messaging_test x_hello x_syscall_demo ; do
+  echo ">>> $TARGET"
+  e-gcc -T ${ELDF} src/${TARGET}.c -o Debug/${TARGET}.elf -I ${XINCS} -L ${XELIBS} -lx-lib -le-lib
+done
+for TARGET in x_naive_matmul ; do
+  echo ">>> $TARGET"
+  e-gcc -O3 -T ${ELDF} src/${TARGET}.c -o Debug/${TARGET}.elf -I ${XINCS} -L ${XELIBS} -lx-lib -le-lib
+done
 
 # Convert ebinary to SREC file
 echo Converting epiphany executables to SREC
-e-objcopy --srec-forceS3 --output-target srec Debug/e_messaging_test.elf Debug/e_messaging_test.srec
+for TARGET in e_messaging_test x_hello x_naive_matmul x_syscall_demo ; do
+  echo ">>> $TARGET"
+  e-objcopy --srec-forceS3 --output-target srec Debug/${TARGET}.elf Debug/${TARGET}.srec
+done
 
 echo All done
